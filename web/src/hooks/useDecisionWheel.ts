@@ -4,9 +4,9 @@ import {
   createSpinRotation,
   createWheelOption,
   defaultWheelOptions,
+  getOptionAtPointer,
   normalizeOptionLabel,
   optionExists,
-  pickRandomOption,
 } from '../utils/wheel'
 
 const spinDurationMs = 1800
@@ -92,12 +92,13 @@ export function useDecisionWheel() {
       return
     }
 
-    const winningOption = pickRandomOption(options)
+    const nextRotation = createSpinRotation(rotationAngle)
+    const winningOption = getOptionAtPointer(options, nextRotation)
 
     setSelectedOption(null)
     setIsSpinning(true)
     setRotationTransitionMs(spinDurationMs)
-    setRotationAngle((currentRotation) => createSpinRotation(currentRotation))
+    setRotationAngle(nextRotation)
 
     window.setTimeout(() => {
       setSelectedOption(winningOption)

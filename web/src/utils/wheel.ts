@@ -21,15 +21,27 @@ export function createWheelOption(label: string): WheelOption {
   }
 }
 
-export function pickRandomOption(options: WheelOption[]) {
-  return options[Math.floor(Math.random() * options.length)]
-}
-
 export function createSpinRotation(currentRotation: number) {
   const fullRotations = 5 + Math.floor(Math.random() * 4)
   const landingAngle = Math.floor(Math.random() * 360)
 
   return currentRotation + fullRotations * 360 + landingAngle
+}
+
+export function getOptionAtPointer(
+  options: WheelOption[],
+  rotationAngle: number,
+) {
+  if (options.length === 0) {
+    return null
+  }
+
+  const segmentAngle = 360 / options.length
+  const normalizedRotation = ((rotationAngle % 360) + 360) % 360
+  const pointerAngle = (360 - normalizedRotation) % 360
+  const selectedIndex = Math.floor(pointerAngle / segmentAngle)
+
+  return options[selectedIndex] ?? options[0]
 }
 
 export function createWheelGradient(options: WheelOption[]) {
